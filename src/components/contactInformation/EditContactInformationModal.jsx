@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function EditContactInformationModal({ isOpen, onClose, contactInformation,candidateId }) {
 
@@ -29,14 +30,31 @@ function EditContactInformationModal({ isOpen, onClose, contactInformation,candi
             instance.put(`/api/v1/contact-informations/${candidateId}`, updatedContactInformation)
                 .then(response => {
                     console.log(response.data);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Contact information updated successfully.',
+                    });
                 })
                 .catch(error => {
                     console.error(error);
+                    const errorMessage = error.response.data.message;
+                    const errorDetail = error.response.data.detail;
+                    Swal.fire({
+                        icon: 'error',
+                        title: {errorMessage},
+                        text: errorDetail,
+                    });
                 });
 
             onClose();
         } catch (error) {
             console.error(error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'An error occurred while updating contact information.',
+            });
         }
         actions.setSubmitting(false);
     }

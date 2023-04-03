@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import Modal from "react-modal";
+import Swal from "sweetalert2";
 
 
 const validationSchema = Yup.object().shape({
@@ -25,10 +26,23 @@ const UpdateCandidateModal = ({ candidate, isOpen, onRequestClose }) => {
                 `api/v1/candidates/${candidate.id}`,
                 updatedCandidate
             );
+            await Swal.fire({
+                title: "Success!",
+                text: "Candidate details updated successfully",
+                icon: "success",
+                confirmButtonText: "Close",
+            });
             onRequestClose();
-            window.location.reload(false);
         } catch (error) {
-            console.log(error);
+            const errorMessage = error.response.data.message;
+            const errorDetail = error.response.data.detail;
+            await Swal.fire({
+                title: errorMessage,
+                text: "Failed to update candidate details. Please try again.",
+                icon: errorDetail,
+                confirmButtonText: "Close",
+            });
+            console.error(error);
         } finally {
             setIsLoading(false);
             setSubmitting(false);

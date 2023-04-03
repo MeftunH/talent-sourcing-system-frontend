@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-
+import Swal from "sweetalert2";
 const AddContactInformationModal = ({ candidateId, isOpen, onClose }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitError, setSubmitError] = useState(null);
@@ -28,10 +28,24 @@ const AddContactInformationModal = ({ candidateId, isOpen, onClose }) => {
             resetForm();
             setIsSubmitting(false);
             onClose();
+            await Swal.fire({
+                title: "Success!",
+                text: "Contact information added successfully",
+                icon: "success",
+                confirmButtonText: "Close",
+            });
         } catch (error) {
             console.error(error);
             setSubmitError(error.message);
             setIsSubmitting(false);
+            const errorMessage = error.response.data.message;
+            const errorDetail = error.response.data.detail;
+            await Swal.fire({
+                title: errorMessage,
+                text: "Failed to add contact information. Please try again.",
+                icon: errorDetail,
+                confirmButtonText: "Close",
+            });
         }
     };
 

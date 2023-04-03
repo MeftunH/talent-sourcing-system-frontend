@@ -2,7 +2,7 @@ import React from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-
+import Swal from "sweetalert2";
 const validationSchema = Yup.object().shape({
     content: Yup.string().required("Content is required"),
     interactionType: Yup.string().required("Interaction type is required"),
@@ -17,10 +17,22 @@ const UpdateInteractionModal = ({ interaction, onClose }) => {
                 values
             );
             console.log("Interaction updated: ", response.data);
+            await  Swal.fire({
+                title: "Success!",
+                text: "Interaction updated successfully",
+                icon: "success",
+                confirmButtonText: "Close",
+            });
             onClose();
             window.location.reload(false);
         } catch (error) {
             console.error(error);
+            await Swal.fire({
+                title: "Error!",
+                text: "Failed to update interaction. Please try again.",
+                icon: "error",
+                confirmButtonText: "Close",
+            });
         } finally {
             actions.setSubmitting(false);
         }

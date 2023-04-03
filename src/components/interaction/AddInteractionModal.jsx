@@ -2,6 +2,7 @@ import React from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const validationSchema = Yup.object().shape({
     content: Yup.string().required("Content is required"),
@@ -23,9 +24,22 @@ const AddInteractionModal = ({ candidateId, onClose }) => {
                 { ...values, candidateId }
             );
             console.log("New interaction created: ", response.data);
-            window.location.reload(false);
+            await Swal.fire({
+                title: "Success!",
+                text: "New interaction created successfully",
+                icon: "success",
+                confirmButtonText: "Close",
+            });
+            onClose();
         } catch (error) {
             console.error(error);
+            const errorMessage = error.response.data.message;
+            const errorDetail = error.response.data.detail;
+            await Swal.fire({
+                icon: 'error',
+                title: {errorMessage},
+                text: errorDetail,
+            });
         } finally {
             actions.setSubmitting(false);
         }
@@ -126,7 +140,13 @@ const AddInteractionModal = ({ candidateId, onClose }) => {
                                                 >
                                                     Create Interaction
                                                 </button>
-
+                                                <button
+                                                    type="button"
+                                                    onClick={onClose}
+                                                    className="ml-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                >
+                                                    Cancel
+                                                </button>
                                             </div>
                                         </Form>
                                     )}

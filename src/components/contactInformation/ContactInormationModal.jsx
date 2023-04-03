@@ -6,21 +6,21 @@ Modal.setAppElement("#root");
 
 const ContactInformationModal = ({ candidateId }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [contactInformations, setContactInformations] = useState([]);
+    const [contactInformation, setContactInformation] = useState([]);
 
     const closeModal = () => setIsOpen(false);
 
     const openModal = () => setIsOpen(true);
 
     useEffect(() => {
-        const fetchContactInformations = async () => {
+        const fetchContactInformation = async () => {
             const response = await axios.get(
                 `http://localhost:8081/api/v1/contact-informations/candidate/${candidateId}`
             );
-            setContactInformations(response.data.data);
+            setContactInformation(response.data.data);
         };
 
-        fetchContactInformations();
+        fetchContactInformation();
     }, [candidateId]);
 
     return (
@@ -44,7 +44,7 @@ const ContactInformationModal = ({ candidateId }) => {
                         </tr>
                         </thead>
                         <tbody>
-                        {contactInformations.map((contactInformation) => (
+                        {contactInformation.map((contactInformation) => (
                             <tr key={contactInformation.id}>
                                 <td className="border px-4 py-2">
                                     {contactInformation.contactInformationType}
