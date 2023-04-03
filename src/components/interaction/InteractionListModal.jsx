@@ -66,6 +66,14 @@ function InteractionListModal({candidateId, isOpen, onClose}) {
                                     Create Interaction
                                 </button>
                             </div>
+                            {showCreateModal && (
+                                <AddInteractionModal
+                                    candidateId={candidateId}
+                                    onRequestClose={closeAddInteractionModalIsOpen}
+                                />
+                            )
+                            }
+
                         </div>
                         <div className="flex-1 px-4 py-5 sm:px-6">
                             {interactions.length === 0 && (
