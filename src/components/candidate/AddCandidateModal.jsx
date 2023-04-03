@@ -3,6 +3,7 @@ import {Formik, Form, Field, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 import Modal from 'react-modal';
 import axios from 'axios';
+import Swal from "sweetalert2";
 
 Modal.setAppElement('#root');
 
@@ -25,10 +26,23 @@ function AddCandidateModal({isOpen, onRequestClose}) {
             .then((response) => {
                 console.log(response.data);
                 onRequestClose();
-                window.location.reload(false);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Candidate added successfully!',
+                }).then(() => {
+                    window.location.reload(false);
+                });
             })
             .catch((error) => {
-                console.log(error);
+                console.log(error.response.data);
+                const errorMessage = error.response.data.message;
+                const errorDetail = error.response.data.detail;
+                Swal.fire({
+                    icon: 'error',
+                    title: errorMessage,
+                    text: errorDetail,
+                });
             })
             .finally(() => {
                 actions.setSubmitting(false);
