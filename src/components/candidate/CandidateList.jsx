@@ -5,6 +5,7 @@ import UpdateCandidateModal from "./UpdateCandidateModal.jsx";
 import InteractionListModal from "../interaction/InteractionListModal.jsx";
 import AddContactInformationModal from "../contactInformation/AddContactInformationModal.jsx";
 import EditContactInformationModal from "../contactInformation/EditContactInformationModal.jsx";
+import ContactInformationModal from "../contactInformation/ContactInormationModal.jsx";
 
 
 function CandidateList() {
@@ -17,6 +18,7 @@ function CandidateList() {
     const [isDeleting, setIsDeleting] = useState(false);
     const [addCandidateModalIsOpen, setAddCandidateModalIsOpen] = useState(false);
     const [editContactInformationModalIsOpen, setEditContactInformationModalIsOpen] = useState(false);
+    const [ContactInformationModalIsOpen, setContactInformationModalIsOpen] = useState(false);
     const [contactInformation, setContactInformation] = useState(null);
 
     const openAddCandidateModalIsOpen = (candidateId) => {
@@ -34,6 +36,14 @@ function CandidateList() {
     };
     const closeEditCandidateInformationModal = () => {
         setEditContactInformationModalIsOpen(false);
+    };
+
+    const openContactInformationModal = async (candidateId) => {
+        setSelectedCandidateId(candidateId);
+        setContactInformationModalIsOpen(true);
+    };
+    const closeContactInformationModal = () => {
+        setContactInformationModalIsOpen(false);
     };
     const fetchCandidates = async () => {
         try {
@@ -129,13 +139,13 @@ function CandidateList() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen bg-white-100">
             <div className="container mx-auto px-12 sm:px-12 lg:px-12">
                 <h1 className="text-3xl font-bold text-gray-900 tracking-tight mb-4">Candidate List</h1>
                 <div className="flex flex-col">
-                    <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div className="-my-2 sm:-mx-6 lg:-mx-8">
                         <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                            <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                            <div className="shadow overflow-visible border-b border-gray-200 sm:rounded-lg">
                                 <table className="min-w-full divide-y divide-gray-200">
                                     <thead className="bg-gray-50">
                                     <tr>
@@ -216,14 +226,9 @@ function CandidateList() {
                                                     />
                                                 )}
 
-                                                <AddContactInformationModal
-                                                    isOpen={addCandidateModalIsOpen}
-                                                    onClose={closeAddCandidateModalIsOpen}
-                                                    candidateId={selectedCandidateId}
-                                                />
 
                                                 <button
-                                                    className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
+                                                    className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-visible text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
                                                     onClick={() => handleOpenChangeStatusModal(candidate)}
                                                 >
                         <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
@@ -233,6 +238,11 @@ function CandidateList() {
                                                 <ChangeStatusModal
                                                     isOpen={isChangeStatusModalOpen}
                                                     onRequestClose={() => setIsChangeStatusModalOpen(false)}
+                                                    candidateId={selectedCandidateId}
+                                                />
+                                                <ContactInformationModal
+                                                    isOpen={ContactInformationModalIsOpen}
+                                                    onRequestClose={() => setContactInformationModalIsOpen(false)}
                                                     candidateId={selectedCandidateId}
                                                 />
                                             </td>

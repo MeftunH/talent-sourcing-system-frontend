@@ -50,9 +50,9 @@ function InteractionListModal({candidateId, isOpen, onClose}) {
     return (
         <div className={`${
             isOpen ? "block" : "hidden"
-        } fixed z-10 inset-0 overflow-y-auto bg-gray-500 bg-opacity-75`}>
+        } fixed z-10 inset-0 bg-gray-500 bg-opacity-75`}>
             <div className="flex items-center justify-center min-h-screen">
-                <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl">
+                <div className="bg-white rounded-lg shadow-xl w-full max-w-6xl">
                     <div className="flex flex-col h-full">
                         <div className="bg-gray-50 px-4 py-5 border-b border-gray-200 sm:px-6">
                             <h3 className="text-lg leading-6 font-medium text-gray-900">
@@ -67,7 +67,7 @@ function InteractionListModal({candidateId, isOpen, onClose}) {
                                 </button>
                             </div>
                         </div>
-                        <div className="flex-1 overflow-y-auto px-4 py-5 sm:px-6">
+                        <div className="flex-1 px-4 py-5 sm:px-6">
                             {interactions.length === 0 && (
                                 <p className="text-sm text-gray-500 mt-2">
                                     No interactions found.
@@ -76,11 +76,11 @@ function InteractionListModal({candidateId, isOpen, onClose}) {
                             {interactions.length > 0 && (
                                 <div className="mt-2">
                                     <div className="flex flex-col">
-                                        <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                        <div className="-my-2  sm:-mx-6 lg:-mx-8">
                                             <div
                                                 className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                                                 <div
-                                                    className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                                    className="shadow  border-b border-gray-100 sm:rounded-lg pr-45">
                                                     <table className="min-w-full divide-y divide-gray-200">
                                                         <thead className="bg-gray-50">
                                                         <tr>
