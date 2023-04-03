@@ -23,7 +23,6 @@ const AddInteractionModal = ({ candidateId, onClose }) => {
                 { ...values, candidateId }
             );
             console.log("New interaction created: ", response.data);
-            onClose();
             window.location.reload(false);
         } catch (error) {
             console.error(error);
@@ -127,13 +126,7 @@ const AddInteractionModal = ({ candidateId, onClose }) => {
                                                 >
                                                     Create Interaction
                                                 </button>
-                                                <button
-                                                    type="button"
-                                                    onClick={onClose}
-                                                    className="ml-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                                >
-                                                    Cancel
-                                                </button>
+
                                             </div>
                                         </Form>
                                     )}
