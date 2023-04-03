@@ -3,6 +3,9 @@ import axios from 'axios';
 import ChangeStatusModal from "./actions/ChangeStatusModal.jsx";
 import UpdateCandidateModal from "./UpdateCandidateModal.jsx";
 import InteractionListModal from "../interaction/InteractionListModal.jsx";
+import AddContactInformationModal from "../contactInformation/AddContactInformationModal.jsx";
+import EditContactInformationModal from "../contactInformation/EditContactInformationModal.jsx";
+
 
 function CandidateList() {
     const [candidates, setCandidates] = useState([]);
@@ -12,10 +15,25 @@ function CandidateList() {
     const [isUpdateCandidateModalOpen, setIsUpdateCandidateModalOpen] = useState(false);
     const [isInteractionModalOpen, setIsInteractionModalOpen] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
-    const [showModal, setShowModal] = useState(false);
+    const [addCandidateModalIsOpen, setAddCandidateModalIsOpen] = useState(false);
+    const [editContactInformationModalIsOpen, setEditContactInformationModalIsOpen] = useState(false);
+    const [contactInformation, setContactInformation] = useState(null);
 
-    const handleToggleModal = () => {
-        setShowModal(!showModal);
+    const openAddCandidateModalIsOpen = (candidateId) => {
+        setSelectedCandidateId(candidateId)
+        setAddCandidateModalIsOpen(true);
+    }
+    const closeAddCandidateModalIsOpen = () => {
+        setAddCandidateModalIsOpen(false);
+    }
+    const openEditCandidateInformationModal = async (candidateId) => {
+        const contactInfo = await fetchContactInformation(candidateId);
+        setContactInformation(contactInfo);
+        setSelectedCandidateId(candidateId);
+        setEditContactInformationModalIsOpen(true);
+    };
+    const closeEditCandidateInformationModal = () => {
+        setEditContactInformationModalIsOpen(false);
     };
     const fetchCandidates = async () => {
         try {
@@ -25,6 +43,20 @@ function CandidateList() {
             console.log(error);
         }
     };
+
+
+
+    async function fetchContactInformation(candidateId) {
+        const url = `/api/v1/contact-informations/candidate/${candidateId}`;
+        try {
+            const response = await axios.get(url);
+            return response.data.data;
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    }
+
 
 
     useEffect(() => {
@@ -133,6 +165,7 @@ function CandidateList() {
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200">
                                     {candidates.map((candidate) => (
+
                                         <tr key={candidate.id}>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="flex items-center">
@@ -158,6 +191,37 @@ function CandidateList() {
                                                 </td>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
+                                                {!candidate.contactInformation || candidate.contactInformation.length === 0 ?
+                                                    <button onClick={() => openAddCandidateModalIsOpen(candidate.id)}
+                                                            className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+            >Add Contact Information
+
+                                                    </button> :
+                                                    <button
+                                                        onClick={() => openEditCandidateInformationModal(candidate.id)}
+                                                        type="button"
+                                                            className="text-white bg-gradient-to-r
+                                                             from-yellow-400 via-yellow-500 to-yellow-600 hover:bg-gradient-to-br
+                                                             focus:ring-4 focus:outline-none focus:ring-yellow-300 dark:focus:ring-yellow-800
+                                                              font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
+                                                        Edit Contact Information
+                                                    </button>
+                                                }
+                                                {selectedCandidateId && contactInformation && (
+                                                    <EditContactInformationModal
+                                                        isOpen={editContactInformationModalIsOpen}
+                                                        onClose={closeEditCandidateInformationModal}
+                                                        contactInformation={contactInformation}
+                                                        candidateId={selectedCandidateId}
+                                                    />
+                                                )}
+
+                                                <AddContactInformationModal
+                                                    isOpen={addCandidateModalIsOpen}
+                                                    onClose={closeAddCandidateModalIsOpen}
+                                                    candidateId={selectedCandidateId}
+                                                />
+
                                                 <button
                                                     className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
                                                     onClick={() => handleOpenChangeStatusModal(candidate)}

@@ -4,7 +4,6 @@ import CandidateList from "./components/candidate/CandidateList.jsx";
 import AddCandidateModal from "./components/candidate/AddCandidateModal.jsx";
 
 function App() {
-  const [count, setCount] = useState(0)
     const [addCandidateModalIsOpen, setAddCandidateModalIsOpen] = useState(false);
     const openAddCandidateModalIsOpen = () => {
         setAddCandidateModalIsOpen(true);
