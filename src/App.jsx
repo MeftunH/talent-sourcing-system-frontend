@@ -1,34 +1,32 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import CandidateList from "./components/candidate/CandidateList.jsx";
+import AddCandidateModal from "./components/candidate/AddCandidateModal.jsx";
 
 function App() {
   const [count, setCount] = useState(0)
+    const [addCandidateModalIsOpen, setAddCandidateModalIsOpen] = useState(false);
+    const openAddCandidateModalIsOpen = () => {
+        setAddCandidateModalIsOpen(true);
+    };
+
+    const closeAddCandidateModalIsOpen = () => {
+        setAddCandidateModalIsOpen(false);
+    };
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="flex flex-col h-screen justify-center items-center">
+          <div className="mb-4">
+              <button
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  onClick={openAddCandidateModalIsOpen}
+              >
+                  Add Candidate
+              </button>
+              <AddCandidateModal isOpen={addCandidateModalIsOpen} onRequestClose={closeAddCandidateModalIsOpen} />
+          </div>
+          <CandidateList />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
   )
 }
 
