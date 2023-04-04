@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import Modal from 'react-modal';
 import axios from 'axios';
 
-Modal.setAppElement('#root');
+
 
 const validationSchema = Yup.object().shape({
 });

@@ -8,6 +8,8 @@ import EditContactInformationModal from "../contactInformation/EditContactInform
 import ContactInformationModal from "../contactInformation/ContactInormationModal.jsx";
 
 
+
+
 function CandidateList() {
     const [candidates, setCandidates] = useState([]);
     const [selectedCandidateId, setSelectedCandidateId] = useState('');
@@ -18,9 +20,9 @@ function CandidateList() {
     const [isDeleting, setIsDeleting] = useState(false);
     const [addCandidateModalIsOpen, setAddCandidateModalIsOpen] = useState(false);
     const [editContactInformationModalIsOpen, setEditContactInformationModalIsOpen] = useState(false);
-    const [ContactInformationModalIsOpen, setContactInformationModalIsOpen] = useState(false);
+    const [contactInformationModalIsOpen, setContactInformationModalIsOpen] = useState(false);
     const [contactInformation, setContactInformation] = useState(null);
-
+    const [addContactInformationModalIsOpen, setAddContactInformationModalIsOpen] = useState(false);
     const openAddCandidateModalIsOpen = (candidateId) => {
         setSelectedCandidateId(candidateId)
         setAddCandidateModalIsOpen(true);
@@ -28,6 +30,12 @@ function CandidateList() {
     const closeAddCandidateModalIsOpen = () => {
         setAddCandidateModalIsOpen(false);
     }
+
+    const openAddContactInformationModal=async(candidateId)=> {
+        setSelectedCandidateId(candidateId);
+        setAddContactInformationModalIsOpen(true);
+    }
+
     const openEditCandidateInformationModal = async (candidateId) => {
         const contactInfo = await fetchContactInformation(candidateId);
         setContactInformation(contactInfo);
@@ -114,6 +122,8 @@ function CandidateList() {
 
         setIsInteractionModalOpen(true);
     };
+    let closeAddContactInformationModal = () => setAddContactInformationModalIsOpen(false);
+
     const handleOpenUpdateCandidateModal = (candidate) => {
         setSelectedCandidate(candidate);
         console.log("Selected candidate:"+candidate.name);
@@ -202,9 +212,9 @@ function CandidateList() {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 {!candidate.contactInformation || candidate.contactInformation.length === 0 ?
-                                                    <button onClick={() => openAddCandidateModalIsOpen(candidate.id)}
+                                                    <button onClick={() => openAddContactInformationModal(candidate.id)}
                                                             className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-            >Add Contact Information
+                                                  >Add Contact Information
 
                                                     </button> :
                                                     <button
@@ -225,7 +235,13 @@ function CandidateList() {
                                                         candidateId={selectedCandidateId}
                                                     />
                                                 )}
-
+                                                {selectedCandidateId && setAddContactInformationModalIsOpen&&(
+                                                    <AddContactInformationModal
+                                                        isOpen={addContactInformationModalIsOpen}
+                                                        onClose={closeAddContactInformationModal}
+                                                        candidateId={selectedCandidateId}
+                                                    />)
+                                                }
 
                                                 <button
                                                     className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-visible text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
@@ -240,8 +256,17 @@ function CandidateList() {
                                                     onRequestClose={() => setIsChangeStatusModalOpen(false)}
                                                     candidateId={selectedCandidateId}
                                                 />
+                                                <button
+                                                    onClick={() => openContactInformationModal(candidate.id)}
+                                                    type="button"
+                                                    className="text-white bg-gradient-to-r
+                                                             from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br
+                                                             focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800
+                                                              font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
+                                                    Show Contact Information
+                                                </button>
                                                 <ContactInformationModal
-                                                    isOpen={ContactInformationModalIsOpen}
+                                                    isOpen={contactInformationModalIsOpen}
                                                     onRequestClose={() => setContactInformationModalIsOpen(false)}
                                                     candidateId={selectedCandidateId}
                                                 />
